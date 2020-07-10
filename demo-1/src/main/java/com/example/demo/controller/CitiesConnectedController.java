@@ -22,37 +22,36 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class CitiesConnectedController {
-
+	String originCity="";
+	String desitinationCity="";
+	String orgDest="";
+	Set<String> routes;
+	public final static  String YES="yes";
+	public final static String NO="no";
 	@GetMapping(value = "/connected")
-
 	public String connection(@RequestParam Map<String, String> customQuery) {
-		
-		String originCity=customQuery.get("origin");
-		String desitinationCity=customQuery.get("destination");
-		String orgDest=originCity+","+" "+desitinationCity;
-		Set<String> routes=new HashSet<String>();
-		File file = new File("src/main/resources/city.txt"); 
-		final String YES="yes";
-		final String NO="NO";
-	    try {
-	    	 Scanner sc = new Scanner(file);
-	    	 while(sc.hasNextLine()) {
-	    		 routes.add(sc.nextLine());
-	    	 }
-	    	 if(routes.contains(orgDest)) {
-	    		 return YES;
-	    	 }
-	    	 return NO;
+		originCity = customQuery.get("origin");
+		desitinationCity = customQuery.get("destination");
+		orgDest = originCity + "," + " " + desitinationCity;
+		routes = new HashSet<String>();
+		File file = new File("src/main/resources/city.txt");
+		try {
+			Scanner sc = new Scanner(file);
+			while (sc.hasNextLine()) {
+				routes.add(sc.nextLine());
+			}
+			if (routes.contains(orgDest)) {
+				return YES;
+			}
+			return NO;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return e.getLocalizedMessage();
-		} 
-		  
+		}
 
 	}
 	
 	@GetMapping(value="/test")
-	
 	    public String test() {
 		return "success";
 	}
